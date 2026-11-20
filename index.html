@@ -1,0 +1,4172 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,
+maximum-scale=1.0,user-scalable=no">
+
+<title>کلمه</title>
+
+<style>
+
+/* =========================
+   تنظیمات کلی
+========================= */
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+}
+
+body{
+    background:#eef1f5;
+    font-family:Tahoma,sans-serif;
+    text-align:center;
+
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+
+    overflow-x:hidden;
+
+    touch-action:manipulation;
+}
+
+button{
+    border:0;
+    outline:0;
+    box-shadow:none;
+    font-family:inherit;
+    -webkit-appearance:none;
+}
+
+button:focus,
+button:active{
+    outline:none;
+    box-shadow:none;
+}
+
+
+/* =========================
+   صفحات
+========================= */
+
+.page{
+    width:100%;
+    min-height:70vh;
+}
+
+.hide{
+    display:none !important;
+}
+
+
+/* =========================
+   انیمیشن سبک
+========================= */
+
+.page.show{
+    animation:pageIn .2s ease;
+}
+
+@keyframes pageIn{
+
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+/* =========================
+   صفحه اصلی
+========================= */
+
+#home{
+    padding:15px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    gap:20px;
+}
+
+.welcome{
+    background:gray;
+    border-radius:20px;
+
+    padding:25px 10px;
+
+    font-size:30px;
+    font-weight:bold;
+
+    line-height:1.8;
+}
+
+.welcome span{
+    display:block;
+}
+
+
+/* =========================
+   دکمه‌های صفحه اصلی
+========================= */
+
+.homeBtn{
+    width:100%;
+    padding:16px;
+
+    border-radius:15px;
+
+    color:white;
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+.start{
+    background:#20bf6b;
+}
+
+.guide{
+    background:#f39c12;
+}
+
+
+/* =========================
+   صفحه بازی
+========================= */
+
+#gamePage{
+    padding:15px;
+    min-height:100vh;
+}
+
+
+/* =========================
+   سکه
+========================= */
+
+.top{
+    background:gold;
+
+    border-radius:15px;
+
+    padding:15px;
+    margin-bottom:12px;
+
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   مرحله
+========================= */
+
+#level{
+    background:green;
+
+    border-radius:15px;
+
+    padding:12px;
+    margin-bottom:12px;
+
+    font-size:22px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   کلمه در حال ساخت
+========================= */
+
+.wordBox{
+    width:100%;
+
+    min-height:65px;
+
+    margin-bottom:12px;
+
+    display:flex;
+    align-items:center;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    scrollbar-width:none;
+}
+
+.wordBox::-webkit-scrollbar{
+    display:none;
+}
+
+#wordCells{
+    display:flex;
+
+    flex-wrap:nowrap;
+    gap:6px;
+
+    min-width:max-content;
+
+    margin:auto;
+}
+
+
+/* =========================
+   خانه‌های کلمه
+========================= */
+
+.wordCell{
+    width:50px;
+    height:50px;
+
+    flex:0 0 50px;
+
+    background:#d1d5db;
+
+    border-radius:10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   تعداد کلمات
+========================= */
+
+.foundCount{
+    background:white;
+
+    border-radius:15px;
+
+    padding:13px;
+    margin-bottom:12px;
+
+    font-size:17px;
+    font-weight:bold;
+}
+
+
+/* =========================
+   کادر جواب‌ها
+========================= */
+
+.answersBox{
+    width:100%;
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:12px;
+    margin-bottom:15px;
+
+    overflow-x:auto;
+    overflow-y:hidden;
+
+    direction:rtl;
+
+    scrollbar-width:thin;
+}
+
+
+/* =========================
+   جواب‌ها
+========================= */
+
+#answers{
+    display:flex;
+
+    flex-direction:row;
+
+    align-items:stretch;
+    justify-content:flex-start;
+
+    width:max-content;
+    min-width:100%;
+
+    direction:rtl;
+}
+
+
+/* =========================
+   گروه ۵ تایی
+========================= */
+
+.answerGroup{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    padding:0 10px;
+
+    min-width:max-content;
+
+    border-left:3px solid #000;
+}
+
+
+/* =========================
+   هر جواب
+========================= */
+
+.answer{
+    display:flex;
+
+    align-items:center;
+
+    gap:3px;
+
+    min-height:38px;
+
+    direction:rtl;
+}
+
+
+/* =========================
+   خانه جواب
+========================= */
+
+.answerCell{
+    width:38px;
+    height:38px;
+
+    min-width:20px;
+
+    background:#d1d5db;
+
+    border-radius:7px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:17px;
+    font-weight:bold;
+
+    transition:
+        background .15s ease,
+        transform .15s ease;
+}
+
+
+/* =========================
+   جواب پیدا شده
+========================= */
+
+.answer.found .answerCell{
+    background:#20bf6b;
+    color:white;
+}
+
+
+/* =========================
+   حروف بازی
+========================= */
+
+#letters{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-bottom:15px;
+}
+
+.letter{
+    width:62px;
+    height:62px;
+
+    flex:0 0 62px;
+
+    background:#4b7bec;
+    color:white;
+
+    border-radius:15px;
+
+    font-size:25px;
+    font-weight:bold;
+}
+
+.letter:active{
+    transform:scale(.92);
+}
+
+
+/* =========================
+   دکمه‌ها
+========================= */
+
+.actions{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:7px;
+
+    margin-bottom:12px;
+}
+
+.action{
+    padding:13px 17px;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:bold;
+}
+
+.clear{
+    background:#ff6b6b;
+}
+
+.check{
+    background:#20bf6b;
+}
+
+.back{
+    width:100%;
+    background:#e74c3c;
+}
+
+
+/* =========================
+   پیام
+========================= */
+
+#message{
+    min-height:30px;
+
+    margin-bottom:12px;
+
+    font-weight:bold;
+
+    transition:color .15s ease;
+}
+
+.messageCorrect{
+    color:#20bf6b;
+}
+
+.messageWrong{
+    color:#e74c3c;
+}
+
+.messageRepeat{
+    color:#f39c12;
+}
+
+
+/* =========================
+   کلمات پیدا شده
+========================= */
+
+.foundWords{
+    background:white;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    margin-bottom:20px;
+
+    text-align:right;
+}
+
+.foundTitle{
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+#foundList{
+    font-weight:bold;
+    line-height:2;
+}
+
+
+/* =========================
+   پنجره راهنما
+========================= */
+
+#guideBox{
+    position:fixed;
+
+    inset:0;
+
+    z-index:100;
+
+    background:rgba(0,0,0,.55);
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:15px;
+}
+
+#guideBox.hide{
+    display:none !important;
+}
+
+.modal{
+    width:100%;
+    max-width:430px;
+
+    max-height:85vh;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    display:flex;
+    flex-direction:column;
+
+    animation:modalIn .18s ease;
+}
+
+@keyframes modalIn{
+
+    from{
+        opacity:0;
+        transform:scale(.97);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+
+}
+
+.guideText{
+    overflow-y:auto;
+
+    padding:15px;
+
+    line-height:2.3;
+
+    font-size:18px;
+
+    font-weight:bold;
+}
+
+.close{
+    background:#e74c3c;
+
+    color:white;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    font-size:17px;
+
+    font-weight:bold;
+}
+
+
+/* =========================
+   گوشی‌های کوچک
+========================= */
+
+@media(max-width:350px){
+
+    .letter{
+        width:55px;
+        height:55px;
+        flex-basis:55px;
+    }
+
+    .wordCell{
+        width:44px;
+        height:44px;
+        flex-basis:44px;
+    }
+
+    .answerCell{
+        width:32px;
+        height:32px;
+    }
+
+}
+/* =========================
+   دکمه «کمک ها»
+========================= */
+
+.help{
+    background:#f1c40f;
+    color:#000;
+}
+
+
+/* =========================
+   پنجره کمک ها
+========================= */
+
+#helpBox{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:200;
+
+    background:rgba(0,0,0,.55);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:15px;
+
+}
+
+
+/* =========================
+   مخفی کردن پنجره
+========================= */
+
+#helpBox.hide{
+
+    display:none !important;
+
+}
+
+
+/* =========================
+   کادر داخل پنجره
+========================= */
+
+.helpModal{
+
+    width:100%;
+
+    max-width:430px;
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    animation:helpModalIn .18s ease;
+
+}
+
+
+/* =========================
+   انیمیشن باز شدن
+========================= */
+
+@keyframes helpModalIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.97);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+/* =========================
+   عنوان کمک ها
+========================= */
+
+.helpTitle{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    margin-bottom:5px;
+
+}
+
+
+/* =========================
+   هر بخش کمک
+========================= */
+
+.helpItem{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+
+/* =========================
+   دکمه های کمک
+========================= */
+
+.helpOption{
+
+    width:100%;
+
+    min-height:68px;
+
+    padding:10px;
+
+    border:0;
+
+    border-radius:14px;
+
+    background:#f1c40f;
+
+    color:#000;
+
+    font-family:inherit;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:4px;
+
+    cursor:pointer;
+
+    -webkit-appearance:none;
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+
+
+/* =========================
+   حالت لمس دکمه کمک
+========================= */
+
+.helpOption:active{
+
+    transform:scale(.97);
+
+}
+
+
+/* =========================
+   جلوگیری از استایل فوکوس
+========================= */
+
+.helpOption:focus{
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+
+
+/* =========================
+   پیام زیر هر کمک
+========================= */
+
+.helpMessage{
+
+    min-height:24px;
+
+    padding:2px 5px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    color:#e67e22;
+
+}
+
+
+/* =========================
+   دکمه بستن
+========================= */
+
+.helpClose{
+
+    width:100%;
+
+    padding:14px;
+
+    border:0;
+
+    border-radius:12px;
+
+    background:#e74c3c;
+
+    color:#fff;
+
+    font-family:inherit;
+
+    font-size:17px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    -webkit-appearance:none;
+
+    outline:none;
+
+    box-shadow:none;
+
+    margin-top:5px;
+
+}
+
+
+/* =========================
+   حالت لمس بستن
+========================= */
+
+.helpClose:active{
+
+    transform:scale(.97);
+
+}
+
+
+/* =========================
+   فوکوس بستن
+========================= */
+
+.helpClose:focus{
+
+    outline:none;
+
+    box-shadow:none;
+
+}
+
+
+/* =========================
+   گوشی های کوچک
+========================= */
+
+@media(max-width:350px){
+
+    .helpModal{
+
+        padding:14px;
+
+        border-radius:17px;
+
+    }
+
+
+    .helpTitle{
+
+        font-size:21px;
+
+    }
+
+
+    .helpOption{
+
+        min-height:62px;
+
+        font-size:16px;
+
+    }
+
+
+    .helpMessage{
+
+        font-size:14px;
+
+    }
+
+
+    .helpClose{
+
+        padding:12px;
+
+        font-size:16px;
+
+    }
+
+}
+</style>
+
+</head>
+
+<body>
+
+
+<div id="game">
+
+
+<!-- =========================
+     صفحه اصلی
+========================= -->
+
+<section id="home" class="page show">
+
+    <div class="welcome">
+
+        <span>به بازی</span>
+        <span>کلمه</span>
+        <span>خوش اومدی</span>
+
+    </div>
+
+
+    <button
+        id="startBtn"
+        class="homeBtn start"
+        type="button">
+
+        شروع بازی اصلی
+
+    </button>
+
+
+    <button
+        id="guideBtn"
+        class="homeBtn guide"
+        type="button">
+
+        راهنما
+
+    </button>
+
+</section>
+
+
+<!-- =========================
+     صفحه بازی
+========================= -->
+
+<section id="gamePage" class="page hide">
+
+
+    <div class="top">
+
+        سکه شما:
+
+        <span id="coins">0</span>
+
+    </div>
+
+
+    <div id="level">
+
+        مرحله: 1
+
+    </div>
+
+
+    <!-- کلمه در حال ساخت -->
+
+    <div class="wordBox">
+
+        <div id="wordCells"></div>
+
+    </div>
+
+
+    <div class="foundCount">
+
+        کلمات پیدا شده:
+
+        <span id="foundCount">0/0</span>
+
+    </div>
+
+
+    <!-- جدول کلمات -->
+
+    <div class="answersBox">
+
+        <div id="answers"></div>
+
+    </div>
+
+
+    <!-- حروف -->
+
+    <div id="letters"></div>
+
+
+    <!-- پیام -->
+
+    <div id="message"></div>
+
+
+    <!-- دکمه‌های کلمه -->
+
+    <div class="actions">
+
+        <button
+            id="clearBtn"
+            class="action clear"
+            type="button">
+
+            پاک کردن
+
+        </button>
+
+<!-- =========================
+     دکمه کمک ها
+========================= -->
+
+<button
+    id="helpBtn"
+    class="action help"
+    type="button">
+
+    کمک ها
+
+</button>
+
+
+<!-- =========================
+     پنجره کمک ها
+========================= -->
+
+<div
+    id="helpBox"
+    class="hide">
+
+    <div class="helpModal">
+
+        <!-- عنوان -->
+
+        <div class="helpTitle">
+
+            کمک ها
+
+        </div>
+
+
+        <!-- =====================
+             کمک اول: راهنما
+        ====================== -->
+
+        <div class="helpItem">
+
+            <button
+                id="guideHelpBtn"
+                class="helpOption"
+                type="button">
+
+                <span>
+                    راهنما
+                </span>
+
+                <span>
+                    هزینه:1000 سکه
+                </span>
+
+            </button>
+
+
+            <div
+                id="guideHelpMessage"
+                class="helpMessage">
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             کمک دوم: راهنما شانسی
+        ====================== -->
+
+        <div class="helpItem">
+
+            <button
+                id="randomHelpBtn"
+                class="helpOption"
+                type="button">
+
+                <span>
+                    راهنما شانسی
+                </span>
+
+                <span>
+                    هزینه:1000 سکه
+                </span>
+
+            </button>
+
+
+            <div
+                id="randomHelpMessage"
+                class="helpMessage">
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             کمک سوم:
+             کامل کردن یک کلمه کامل
+        ====================== -->
+
+        <div class="helpItem">
+
+            <button
+                id="completeHelpBtn"
+                class="helpOption"
+                type="button">
+
+                <span>
+                    کامل کردن یک کلمه کامل
+                </span>
+
+                <span>
+                    هزینه:5000 سکه
+                </span>
+
+            </button>
+
+
+            <div
+                id="completeHelpMessage"
+                class="helpMessage">
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             دکمه بستن
+        ====================== -->
+
+        <button
+            id="closeHelp"
+            class="helpClose"
+            type="button">
+
+            بستن
+
+        </button>
+
+    </div>
+
+</div>
+
+        <button
+            id="checkBtn"
+            class="action check"
+            type="button">
+
+            بررسی کردن کلمه
+
+        </button>
+
+    </div>
+
+
+    <!-- کلمات پیدا شده -->
+
+    <div class="foundWords">
+
+        <div class="foundTitle">
+
+            کلمات پیدا شده:
+
+        </div>
+
+
+        <div id="foundList">
+
+            هیچ‌کدام
+
+        </div>
+
+    </div>
+
+
+    <!-- برگشت -->
+
+    <div class="actions">
+
+        <button
+            id="backBtn"
+            class="action back"
+            type="button">
+
+            برگشت به صفحه اصلی
+
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- =========================
+     پنجره راهنما
+========================= -->
+
+<div id="guideBox" class="hide">
+
+    <div class="modal">
+
+        <div class="guideText">
+
+            <br>
+            به بازی کلمه خوش آمدید
+            <br>
+توجه داشته باشید که با کلمات نمیتوانید چندین بار استفاده بکنید
+<br>
+کمک ها
+<br>
+راهنما به این صورت کار میکند: برای مثال در مرحله ای که قرار دارید یک کلمه به نام خرس و یک کلمه به نام حیوان وجود دارد
+<br>
+خرس دارای ۳ کلمه خ_ر_س میباشد و حیوان دارای ۵ کلمه ح_ی_و_ا_ن میباشد
+<br>
+راهنما به آن کلمه ای که بیشترین جدول را دارد به ترتیب جدول اول آن را به شما نشان میدهد
+<br>
+راهنما شانسی: این راهنما یک جدول کامل نشده را به صورت شانسی نشان میدهد
+<br>
+برای مثال کلمه ماهی دارای ۴ کلمه میباشد م_ا_ه_ی که دارای ۴ جدول میشود و راهنما شانسی به طور شانسی یکی از آن جدول را جواب را میگوید مثلا جدول ۳ که جواب آن جدول ۳ میشود یعنی کلمه ه و بقیه هم به همین شکل
+<br>
+کامل کردن یک کلمه کامل: این کمک میکند تا جواب یک جدول کامل را بدانید و جواب کل آن را به شما نشان میدهد
+<br>
+مثلا کلمه اسب که دارای ۳ جدول میشود جواب کل آن جدول را برای شما نمایش میگذارد
+<br>
+توجه داشته باشید هر کمک نیاز به سکه دارد
+<br>
+نکته:کلمه (ا) در اصل همان آ_اِ_اَ_اُ هستند ولی در بازی کلا برای شما (ا) نشان میدهد
+            <br>
+            موفق باشی
+
+        </div>
+
+
+        <button
+            id="closeGuide"
+            class="close"
+            type="button">
+
+            بستن
+
+        </button>
+
+    </div>
+
+</div>
+<script>
+
+/* =========================
+   مراحل بازی
+   =========================
+   برای اضافه کردن مرحله جدید،
+   فقط یک مورد جدید به این لیست اضافه کن.
+========================= */
+
+const levels = [
+
+    {
+        id:"1",
+        letters:["س","ن","ش","گ"],
+        answers:["سگ","شن","سنگ"]
+    },
+
+    {
+        id:"2",
+        letters:["ا","ر","ب","س"],
+        answers:["سر","بار","اسب","ابر"]
+    },
+
+    {
+        id:"3",
+        letters:["ر","ا","گ","ن","و"],
+        answers:["رگ","نور","روان","انگور"]
+    },
+
+    {
+        id:"4",
+        letters:["خ","ه","ا","ن","و"],
+        answers:["اهن","خون","خان"]
+    },
+
+    {
+        id:"5",
+        letters:["ا","پ","و","ن","ه"],
+        answers:["نوه","هوا","پونه"]
+    },
+
+    {
+        id:"6",
+        letters:["ت","ک","ب","ا","ر"],
+        answers:["باک","تبر","کتاب"]
+    },
+{
+id:"7",
+letters:["ک","خ","و","ا"],
+answers:["خوک","کاخ","خاک"]
+},
+{
+id:"8",
+letters:["ن","م","ک","ا","ب"],
+answers:["کم","نمک","بانک","کمان","مکان"]
+},
+{
+id:"9",
+letters:["ه","ا","و","ن","م"],
+answers:["هوا","اهو","اهن","امن","ماه"]
+},
+{
+id:"10",
+letters:["غ","ا","چ","و","ه","ق","ر"],
+answers:["قوچ","چاق","چاه","چراغ","چاقو","قارچ","چراغقوه"]
+},
+{
+id:"11",
+letters:["ه","ر","ش","و","ا","ن","د","ن"],
+answers:["شهر","شاه","شور","شوهر","شهروند","شهروندان"]
+},
+{
+id:"12",
+letters:["س","ا","د","ر"],
+answers:["سرد","درس","ادرس"]
+},
+{
+id:"13",
+letters:["ر","د","ا","م","د","ل","ا"],
+answers:["درد","دار","دام","مدل","مدار","مداد","مدال","مادر","داماد","دامدار"]
+},
+{
+id:"14",
+letters:["ی","د","و","ا","ر","ه"],
+answers:["دیو","وارد","دارو","داور","دایره","دیوار"]
+},
+{
+id:"15",
+letters:["ن","م","ا","ه","ی","ا"],
+answers:["امن","نیما","اینه","مینا","ماهی","نامه","ایمن","ایمان"]
+},
+{
+id:"16",
+letters:["ع","ل","س","م","م"],
+answers:["عسل","علم","عمل","معلم"]
+},
+{
+id:"17",
+letters:["ه","ق","ه","و","م","ر"],
+answers:["مهر","قهر","قمر","قمه","مهره","قهوه"]
+},
+{
+id:"18",
+letters:["پ","ل","س","ی","ا"],
+answers:["پاس","سیل","پلیس"]
+},
+{
+id:"19",
+letters:["ا","ت","ب","ن"],
+answers:["تاب","بنا","نبات"]
+},
+{
+id:"20",
+letters:["ش","ر","ک","ت"],
+answers:["شکر","رشت","ترش","ترک","تشک","شرکت","ترکش","تشکر"]
+},
+{
+id:"21",
+letters:["ن","ج","ر","ب"],
+answers:["رنج","برج","برنج"]
+},
+{
+id:"22",
+letters:["ت","ش","م","ک"],
+answers:["تشک","شکم","کشت","مشت","تمشک"]
+},
+{
+id:"23",
+letters:["ب","ل","ا","ش"],
+answers:["بال","بلا","شال","بالش"]
+},
+{
+id:"24",
+letters:["خ","ی","م","ر"],
+answers:["یخ","خر","مخ","خیر","میخ","خمیر","مریخ"]
+},
+{
+id:"25",
+letters:["ه","ا","ک","و"],
+answers:["اهک","اهو","کوه","کاه","کاهو","کاوه"]
+},
+{
+id:"26",
+letters:["ت","ا","ر","ش"],
+answers:["تار","ترش","رشت","شتر","ارش","اتش","ارتش","تراش"]
+},
+{
+id:"27",
+letters:["ر","ز","ا","س","گ"],
+answers:["ارز","راز","ساز","گاز","گراز","زاگرس"]
+},
+{
+id:"28",
+letters:["ک","ل","م","ه","ا"],
+answers:["کلم","ملک","کله","لکه","ماه","الک","ملکه","کلمه","مالک","کامل"]
+},
+{
+id:"29",
+letters:["ف","د","ر","ا","ی"],
+answers:["دیر","دریا","فردا","فریاد"]
+},
+{
+id:"30",
+letters:["ک","ی","ن","ش","ر"],
+answers:["نیک","نیش","شکر","کیش","شیر","ریش","شریک","نیشکر"]
+},
+{
+id:"31",
+letters:["گ","ن","ی","ا","ل"],
+answers:["گل","یال","لنگ","لگن","لیگ","نیل","انگل","گیلان"]
+},
+{
+id:"32",
+letters:["ب","ی","س","ن","ت"],
+answers:["سیب","سنت","بیست","تنیس","سنتی","بستنی"]
+},
+{
+id:"33",
+letters:["و","ش","ه","ن","گ"],
+answers:["هوش","نوش","گوش","گونه","گوشه","گشنه"]
+},
+{
+id:"34",
+letters:["ق","ر","م"],
+answers:["رمق","قمر","رقم"]
+},
+{
+id:"35",
+letters:["ا","ق","ر","ب","غ"],
+answers:["غرب","غار","قاب","قبر","برق","باغ","غبار","براق"]
+},
+{
+id:"36",
+letters:["ر","گ","گ","م"],
+answers:["رگ","گرم","مرگ","گرگ"]
+},
+{
+id:"37",
+letters:["م","س","ا","ت"],
+answers:["اسم","تاس","ستم","ماست","تماس"]
+},
+{
+id:"38",
+letters:["ل","و","ب","ا","ی"],
+answers:["الو","لبو","بیل","ویلا","لوبیا"]
+},
+{
+id:"39",
+letters:["پ","ز","ی","ت","ا"],
+answers:["زیپ","تیز","پیاز","پیتزا"]
+},
+{
+id:"40",
+letters:["د","ن","ی","ا","م"],
+answers:["دین","نما","امن","دما","مین","نیم","دام","نام","امید","نیما","دنیا","دامن","ایمن","نماد","میدان"]
+},
+{
+id:"41",
+letters:["ا","ب","م","ی","ه"],
+answers:["بام","ماه","ماهی","بیمه","بامیه"]
+},
+{
+id:"42",
+letters:["ا","ب","ن","ا","ر"],
+answers:["بنا","انار","ابان","انبر","انبار","باران"]
+},
+{
+id:"43",
+letters:["ه","ا","ر","ب","و"],
+answers:["بره","راه","اهو","ابرو","بهار","باور","راهب","روباه"]
+},
+{
+id:"44",
+letters:["ا","ر","ت","ک","ن"],
+answers:["تار","ران","کار","ترک","کنار","تانک","کارت","تکان","کران","کتان","تانکر"]
+},
+{
+id:"45",
+letters:["ب","ا","س","ک","و"],
+answers:["کسب","اسب","باک","بوس","سبک","سکو","واکس","کاسب","کابوس"]
+},
+{
+id:"46",
+letters:["گ","ا","و","ر","ن"],
+answers:["گاو","نوا","گون","گور","نور","ران","رنگ","واگن","روان","نوار","نگار","گران","انگور"]
+},
+{
+id:"47",
+letters:["ی","ش","ر","ه"],
+answers:["ریش","شیر","شهر","ریه","شیره","ریشه"]
+},
+{
+id:"48",
+letters:["خ","ا","ل","ی","چ"],
+answers:["یخ","چال","خال","یال","خیال","یخچال"]
+},
+{
+id:"49",
+letters:["ه","ش","و","ا","ب"],
+answers:["هوش","اشوب","شهاب","باهوش"]
+},
+{
+id:"50",
+letters:["ل","ی","ر","ت","ف"],
+answers:["ریل","تیر","فیل","لیف","رتیل","لیتر","فیلتر"]
+},
+{
+id:"51",
+letters:["ا","ج","ر","ب","و"],
+answers:["اجر","باج","برج","ابرو","جارو","جواب","باور","جوراب"]
+},
+{
+id:"52",
+letters:["ط","ه","خ","ر","ا"],
+answers:["خار","خطر","اخر","خطا","خاطره"]
+},
+{
+id:"53",
+letters:["ط","ا","ل","ن","س"],
+answers:["سال","طلا","سطل","نسل","سالن","سلطان"]
+},
+{
+id:"54",
+letters:["ی","ب","ا","ا","س"],
+answers:["اسب","سیب","اسیا","اسیب","اسیاب"]
+},
+{
+id:"55",
+letters:["ر","ا","ی","ت","ب"],
+answers:["تاب","تبر","ترب","تیر","ربات","باتری"]
+},
+{
+id:"56",
+letters:["ب","ز","ه","ر","خ"],
+answers:["بره","خزر","خبر","خبره","برزخ","خربزه"]
+},
+{
+id:"57",
+letters:["ر","پ","س","ی","ا"],
+answers:["سپر","پسر","پیر","سیر","پری","اسیر","ساری","سایر","پاریس","پریسا"]
+},
+{
+id:"58",
+letters:["ن","د","ر","ب","ه"],
+answers:["بدن","بده","بند","نرده","نبرد","رنده","بندر","برنده"]
+},
+{
+id:"59",
+letters:["ج","ر","ا","ی","ن"],
+answers:["اجر","جان","جاری","نجار","ناجی","ارنج","نجاری","انجیر"]
+},
+{
+id:"60",
+letters:["ل","ر","ا","و","ش"],
+answers:["روش","شال","شور","شورا","واشر","لواش","شلوار"]
+},
+{
+id:"61",
+letters:["ف","ن","د","ا","س"],
+answers:["دفن","سند","نفس","داس","فساد","اسفند"]
+},
+{
+id:"62",
+letters:["ن","پ","ه","ر","ج"],
+answers:["پنج","رنج","پهن","پنجه","پنجره"]
+},
+{
+id:"63",
+letters:["ذ","ج","ب","ا","ه"],
+answers:["باج","بها","باجه","جذاب","جذبه","جاذبه"]
+},
+{
+id:"64",
+letters:["م","ض","ن","ا","ت"],
+answers:["متن","نما","تمنا","ضامن","ضمانت"]
+},
+{
+id:"65",
+letters:["ز","ا","د","ه","م"],
+answers:["ماه","مزه","مزد","ماده","همزاد"]
+},
+{
+id:"66",
+letters:["ر","ف","ت","ه","ش"],
+answers:["هفت","هشت","شته","رشته","شهرت","فرشته"]
+},
+{
+id:"67",
+letters:["ر","س","د","ا","ر"],
+answers:["درس","سرد","دسر","ادرس","سردر","سردار"]
+},
+{
+id:"68",
+letters:["ش","ن","ی","ا","و"],
+answers:["نیش","ناو","شیوا","یواش","شنوا","ناشی","شیون","اویشن"]
+},
+{
+id:"69",
+letters:["ی","س","ا","گ","ر"],
+answers:["گیس","ریگ","یاس","گاری","ساری","سایر","اسیر","گریس","سیگار"]
+},
+{
+id:"70",
+letters:["ا","ک","ت","ل","ف"],
+answers:["لات","فلک","تلف","کتف","افت","کلفت","فلاکت"]
+},
+{
+id:"71",
+letters:["ا","د","ا","م","ب"],
+answers:["ابد","باد","ادب","بام","ادم","دما","دام","اباد","مبادا","بادام"]
+},
+{
+id:"72",
+letters:["ی","ل","س","گ","ا","ن"],
+answers:["نسل","گسل","نیل","سیل","سنگ","یاس","سینا","سنگی","گالن","یسنا","سالن","انگل","گینس","گیلان","گیلاس","سیگنال","انگلیس"]
+},
+{
+id:"73",
+letters:["ا","ر","ن","ن","د","ز","م","ا"],
+answers:["مادر","نادر","زمان","دراز","نماز","دامن","مراد","ازاد","زمرد","رمان","امار","ازار","مزار","مدار","انار","اراد","دانا","نماد","دامان","ارزان","درمان","زندان","ارمان","نامدار","مازندران"]
+},
+{
+id:"74",
+letters:["د","گ","ر","ش","ر","گ","ا","ن"],
+answers:["نادر","اردن","شگرد","ناشر","گردن","ارشد","گردش","رانش","دانش","گشاد","نگرش","درنگ","گردان","گرانش","شاگرد","نگارش","گرگان","گردشگر","گردشگران"]
+},
+];
+
+
+/* =========================
+   اطلاعات ذخیره شده
+========================= */
+
+let game = JSON.parse(
+
+    localStorage.getItem(
+        "KalamehData"
+    )
+
+) || {
+
+    levelId:levels[0].id,
+
+    /*
+       سکه به صورت متن ذخیره می‌شود
+       تا بتوانیم اعداد بسیار بزرگ
+       داشته باشیم.
+    */
+
+    coins:"1000",
+
+    /*
+       کلمات پیدا شده هر مرحله
+       جداگانه ذخیره می‌شوند.
+    */
+
+    found:{}
+
+};
+
+
+/* =========================
+   سازگاری با نسخه قبلی
+========================= */
+
+if(typeof game.coins !== "string"){
+
+    game.coins =
+        String(game.coins || 0);
+
+}
+
+
+/* =========================
+   ذخیره بازی
+========================= */
+
+function saveGame(){
+
+    localStorage.setItem(
+        "KalamehData",
+        JSON.stringify(game)
+    );
+
+}
+
+
+/* =========================
+   پیدا کردن مرحله فعلی
+========================= */
+
+function getLevelIndex(){
+
+    const index =
+        levels.findIndex(
+            function(item){
+
+                return item.id ===
+                    game.levelId;
+
+            }
+        );
+
+
+    if(index === -1){
+
+        game.levelId =
+            levels[0].id;
+
+        saveGame();
+
+        return 0;
+
+    }
+
+
+    return index;
+
+}
+
+
+/* =========================
+   مرحله فعلی
+========================= */
+
+function getLevel(){
+
+    return levels[
+        getLevelIndex()
+    ];
+
+}
+
+
+/* =========================
+   کلمات پیدا شده مرحله
+========================= */
+
+function getFound(){
+
+    const id =
+        game.levelId;
+
+
+    if(!game.found[id]){
+
+        game.found[id] = [];
+
+    }
+
+
+    return game.found[id];
+
+}
+
+
+/* =========================
+   کامل بودن مرحله
+========================= */
+
+function isComplete(id){
+
+    const levelData =
+        levels.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(!levelData)
+        return false;
+
+
+    const found =
+        game.found[id] || [];
+
+
+    return (
+        found.length >=
+        levelData.answers.length
+    );
+
+}
+
+
+/* =========================
+   تشخیص مرحله جدید
+========================= */
+
+function updateAfterNewLevels(){
+
+    let index =
+        getLevelIndex();
+
+
+    while(
+
+        index <
+        levels.length - 1 &&
+
+        isComplete(
+            levels[index].id
+        )
+
+    ){
+
+        index++;
+
+        game.levelId =
+            levels[index].id;
+
+    }
+
+
+    saveGame();
+
+}
+
+
+/* =========================
+   عناصر صفحه
+========================= */
+
+const home =
+    document.getElementById(
+        "home"
+    );
+
+const gamePage =
+    document.getElementById(
+        "gamePage"
+    );
+
+const coins =
+    document.getElementById(
+        "coins"
+    );
+
+const level =
+    document.getElementById(
+        "level"
+    );
+
+const wordCells =
+    document.getElementById(
+        "wordCells"
+    );
+
+const answers =
+    document.getElementById(
+        "answers"
+    );
+
+const letters =
+    document.getElementById(
+        "letters"
+    );
+
+const foundCount =
+    document.getElementById(
+        "foundCount"
+    );
+
+const foundList =
+    document.getElementById(
+        "foundList"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
+
+const guideBox =
+    document.getElementById(
+        "guideBox"
+    );
+
+
+/* =========================
+   کلمه فعلی
+========================= */
+
+let currentWord = "";
+
+
+/*
+   حروفی که بازیکن در کلمه فعلی
+   مصرف کرده است.
+
+   مثال برای «بابا»:
+
+   ب = 2
+   ا = 2
+*/
+
+let usedLetters = {};
+
+
+/* =========================
+   تعداد موجود هر حرف
+========================= */
+
+function getLetterCount(letter){
+
+    const data =
+        getLevel();
+
+
+    return data.letters.filter(
+        function(item){
+
+            return item === letter;
+
+        }
+    ).length;
+
+}
+
+
+/* =========================
+   تعداد مصرف شده یک حرف
+========================= */
+
+function getUsedCount(letter){
+
+    return usedLetters[letter] || 0;
+
+}
+
+
+/* =========================
+   آیا حرف قابل استفاده است؟
+========================= */
+
+function canUseLetter(letter){
+
+    return (
+        getUsedCount(letter)
+        <
+        getLetterCount(letter)
+    );
+
+}
+/* =========================
+   تعداد سکه بر اساس طول کلمه
+========================= */
+
+function getWordReward(length){
+
+    if(length === 2)
+        return 10;
+
+    if(length === 3)
+        return 30;
+
+    if(length === 4)
+        return 50;
+
+    if(length === 5)
+        return 80;
+
+    if(length === 6)
+        return 100;
+
+    if(length === 7)
+        return 150;
+
+    if(length >= 8)
+        return 200;
+
+    return 0;
+
+}
+
+
+/* =========================
+   اضافه کردن سکه بدون محدودیت
+========================= */
+
+function addCoins(amount){
+
+    const current =
+        BigInt(game.coins);
+
+    game.coins =
+        String(
+            current +
+            BigInt(amount)
+        );
+
+}
+
+
+/* =========================
+   نمایش اطلاعات
+========================= */
+
+function updateInfo(){
+
+    const data =
+        getLevel();
+
+    const found =
+        getFound();
+
+
+    /*
+       عدد سکه انگلیسی است.
+    */
+
+    coins.textContent =
+        game.coins;
+
+
+    level.textContent =
+        "مرحله: " +
+        (getLevelIndex() + 1);
+
+
+    foundCount.textContent =
+        found.length +
+        "/" +
+        data.answers.length;
+
+
+    foundList.textContent =
+        found.length
+        ? found.join(" ، ")
+        : "هیچ‌کدام";
+
+}
+
+
+/* =========================
+   پیام
+========================= */
+
+function showMessage(
+    text,
+    type
+){
+
+    message.className = "";
+
+    message.textContent =
+        text;
+
+
+    if(type === "correct"){
+
+        message.classList.add(
+            "messageCorrect"
+        );
+
+    }
+
+
+    if(type === "wrong"){
+
+        message.classList.add(
+            "messageWrong"
+        );
+
+    }
+
+
+    if(type === "repeat"){
+
+        message.classList.add(
+            "messageRepeat"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   نمایش کلمه در حال ساخت
+========================= */
+
+function showWord(){
+
+    wordCells.innerHTML = "";
+
+
+    if(!currentWord){
+
+        const cell =
+            document.createElement(
+                "div"
+            );
+
+        cell.className =
+            "wordCell";
+
+        wordCells.appendChild(
+            cell
+        );
+
+        return;
+
+    }
+
+
+    for(
+        const letter
+        of currentWord
+    ){
+
+        const cell =
+            document.createElement(
+                "div"
+            );
+
+
+        cell.className =
+            "wordCell";
+
+
+        cell.textContent =
+            letter;
+
+
+        wordCells.appendChild(
+            cell
+        );
+
+    }
+
+}
+
+
+/* =========================
+   نمایش جواب‌ها
+========================= */
+
+function showAnswers(){
+
+    const data =
+        getLevel();
+
+    const found =
+        getFound();
+
+
+    answers.innerHTML = "";
+
+
+    /*
+       هر ۵ کلمه یک ستون است.
+    */
+
+    for(
+        let i = 0;
+        i < data.answers.length;
+        i += 5
+    ){
+
+        const group =
+            document.createElement(
+                "div"
+            );
+
+
+        group.className =
+            "answerGroup";
+
+
+        const groupWords =
+            data.answers.slice(
+                i,
+                i + 5
+            );
+
+
+        groupWords.forEach(
+            function(word){
+
+                const box =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                box.className =
+                    "answer";
+
+
+                const isFound =
+                    found.includes(
+                        word
+                    );
+
+
+                if(isFound){
+
+                    box.classList.add(
+                        "found"
+                    );
+
+                }
+
+
+                for(
+                    const letter
+                    of word
+                ){
+
+                    const cell =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    cell.className =
+                        "answerCell";
+
+
+                    if(isFound){
+
+                        cell.textContent =
+                            letter;
+
+                    }
+
+
+                    box.appendChild(
+                        cell
+                    );
+
+                }
+
+
+                group.appendChild(
+                    box
+                );
+
+            }
+        );
+
+
+        answers.appendChild(
+            group
+        );
+
+    }
+
+}
+
+
+/* =========================
+   نمایش حروف
+========================= */
+
+function showLetters(){
+
+    const data =
+        getLevel();
+
+
+    letters.innerHTML = "";
+
+
+    /*
+       هر حرف فقط به تعداد موجود
+       قابل استفاده است.
+
+       مثلاً اگر فقط یک «ب» باشد،
+       بعد از استفاده دیگر نمی‌توان
+       دوباره از همان «ب» استفاده کرد.
+    */
+
+    data.letters.forEach(
+        function(letter){
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "letter";
+
+            button.type =
+                "button";
+
+            button.textContent =
+                letter;
+
+
+            /*
+               اگر حرف تمام شده باشد،
+               دکمه خاکستری می‌شود.
+            */
+
+            if(
+                !canUseLetter(letter)
+            ){
+
+                button.style.background =
+                    "#9ca3af";
+
+            }
+
+
+            button.onclick =
+                function(){
+
+                    if(
+                        !canUseLetter(
+                            letter
+                        )
+                    ){
+
+                        return;
+
+                    }
+
+
+                    /*
+                       مصرف حرف
+                    */
+
+                    usedLetters[letter] =
+                        getUsedCount(
+                            letter
+                        ) + 1;
+
+
+                    currentWord +=
+                        letter;
+
+
+                    showWord();
+
+                    showLetters();
+
+
+                    button.blur();
+
+                };
+
+
+            letters.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   نمایش کامل مرحله
+========================= */
+
+function showLevel(){
+
+    updateAfterNewLevels();
+
+
+    currentWord = "";
+
+    usedLetters = {};
+
+
+    message.className = "";
+
+    message.textContent = "";
+
+
+    updateInfo();
+
+    showWord();
+
+    showAnswers();
+
+    showLetters();
+
+}
+
+
+/* =========================
+   برگرداندن حروف مصرف‌شده
+========================= */
+
+function restoreUsedLetters(){
+
+    usedLetters = {};
+
+}
+
+
+/* =========================
+   پاک کردن کلمه
+========================= */
+
+function clearWord(){
+
+    currentWord = "";
+
+    restoreUsedLetters();
+
+    showWord();
+
+    showLetters();
+
+
+    message.className = "";
+
+    message.textContent = "";
+
+}
+
+/* =========================================================
+   سیستم کامل کمک ها - نسخه اصلاح شده
+========================================================= */
+
+
+/* =========================================================
+   آماده سازی اطلاعات کمک ها
+========================================================= */
+
+if(
+    !game.hints ||
+    typeof game.hints !== "object"
+){
+
+    game.hints = {};
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   گرفتن اطلاعات کمک های مرحله فعلی
+========================================================= */
+
+function getLevelHints(){
+
+    const levelId =
+        game.levelId;
+
+
+    if(
+        !game.hints[levelId] ||
+        typeof game.hints[levelId] !== "object"
+    ){
+
+        game.hints[levelId] = {};
+
+    }
+
+
+    return game.hints[levelId];
+
+}
+
+
+/* =========================================================
+   مرتب سازی و اصلاح اطلاعات ذخیره شده
+========================================================= */
+
+function normalizeHintData(){
+
+    const hints =
+        getLevelHints();
+
+    const data =
+        getLevel();
+
+
+    data.answers.forEach(
+        function(word){
+
+            /*
+               اگر نسخه قبلی به صورت عدد ذخیره شده بود،
+               آن را به لیست حروف تبدیل می‌کنیم.
+            */
+
+            if(
+                typeof hints[word] === "number"
+            ){
+
+                const count =
+                    Math.max(
+                        0,
+                        Math.min(
+                            hints[word],
+                            word.length
+                        )
+                    );
+
+
+                const indexes = [];
+
+
+                for(
+                    let i = 0;
+                    i < count;
+                    i++
+                ){
+
+                    indexes.push(i);
+
+                }
+
+
+                hints[word] =
+                    indexes;
+
+            }
+
+
+            /*
+               اگر اطلاعات نامعتبر بود
+            */
+
+            if(
+                !Array.isArray(
+                    hints[word]
+                )
+            ){
+
+                hints[word] = [];
+
+            }
+
+
+            /*
+               حذف شماره های نامعتبر
+               و تکراری
+            */
+
+            hints[word] =
+                [...new Set(
+                    hints[word]
+                    .filter(
+                        function(index){
+
+                            return (
+                                Number.isInteger(index) &&
+                                index >= 0 &&
+                                index < word.length
+                            );
+
+                        }
+                    )
+                )]
+                .sort(
+                    function(a,b){
+
+                        return a - b;
+
+                    }
+                );
+
+        }
+    );
+
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   گرفتن حروف راهنمایی شده
+========================================================= */
+
+function getHintIndexes(word){
+
+    normalizeHintData();
+
+
+    const hints =
+        getLevelHints();
+
+
+    return hints[word].slice();
+
+}
+
+
+/* =========================================================
+   ذخیره حروف راهنمایی شده
+========================================================= */
+
+function setHintIndexes(
+    word,
+    indexes
+){
+
+    const hints =
+        getLevelHints();
+
+
+    hints[word] =
+        [...new Set(
+            indexes
+            .filter(
+                function(index){
+
+                    return (
+                        Number.isInteger(index) &&
+                        index >= 0 &&
+                        index < word.length
+                    );
+
+                }
+            )
+        )]
+        .sort(
+            function(a,b){
+
+                return a - b;
+
+            }
+        );
+
+
+    /*
+       خیلی مهم:
+       بلافاصله بعد از کمک ذخیره شود.
+    */
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   آیا کل کلمه راهنمایی شده؟
+========================================================= */
+
+function isWordHintComplete(word){
+
+    return (
+        getHintIndexes(word).length >=
+        word.length
+    );
+
+}
+
+
+/* =========================================================
+   حذف کمک یک کلمه
+   وقتی بازیکن خودش آن را پیدا می‌کند
+========================================================= */
+
+function removeWordHint(word){
+
+    const hints =
+        getLevelHints();
+
+
+    delete hints[word];
+
+
+    saveGame();
+
+}
+
+
+/* =========================================================
+   کم کردن سکه
+========================================================= */
+
+function removeCoins(amount){
+
+    const current =
+        BigInt(game.coins);
+
+    const cost =
+        BigInt(amount);
+
+
+    if(
+        current < cost
+    ){
+
+        return false;
+
+    }
+
+
+    game.coins =
+        String(
+            current - cost
+        );
+
+
+    saveGame();
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   کلمات باقی مانده برای کمک
+========================================================= */
+
+function getRemainingHelpWords(){
+
+    const data =
+        getLevel();
+
+    const found =
+        getFound();
+
+
+    return data.answers.filter(
+        function(word){
+
+            /*
+               کلمه ای که بازیکن خودش پیدا کرده
+            */
+
+            if(
+                found.includes(word)
+            ){
+
+                return false;
+
+            }
+
+
+            /*
+               کلمه ای که کاملاً با کمک پر شده
+            */
+
+            if(
+                isWordHintComplete(word)
+            ){
+
+                return false;
+
+            }
+
+
+            return true;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   نمایش کمک ها روی جدول
+========================================================= */
+
+function renderHelpHints(){
+
+    /*
+       اگر جدول هنوز ساخته نشده،
+       چیزی انجام نده.
+       بعد از ساخته شدن جدول دوباره
+       این تابع اجرا می‌شود.
+    */
+
+    if(
+        !answers
+    ){
+
+        return;
+
+    }
+
+
+    const answerBoxes =
+        answers.querySelectorAll(
+            ".answer"
+        );
+
+
+    /*
+       اگر جدول هنوز خالی است،
+       خارج شو.
+    */
+
+    if(
+        answerBoxes.length === 0
+    ){
+
+        return;
+
+    }
+
+
+    normalizeHintData();
+
+
+    const data =
+        getLevel();
+
+    const found =
+        getFound();
+
+
+    data.answers.forEach(
+        function(word, wordIndex){
+
+            const box =
+                answerBoxes[wordIndex];
+
+
+            if(!box){
+
+                return;
+
+            }
+
+
+            const cells =
+                box.querySelectorAll(
+                    ".answerCell"
+                );
+
+
+            /*
+               اگر کلمه توسط بازیکن پیدا شده،
+               سبز و کامل نمایش داده شود.
+            */
+
+            if(
+                found.includes(word)
+            ){
+
+                cells.forEach(
+                    function(cell,index){
+
+                        cell.textContent =
+                            word[index];
+
+
+                        cell.classList.remove(
+                            "hintedCell"
+                        );
+
+
+                        cell.style.background =
+                            "";
+
+
+                        cell.style.color =
+                            "";
+
+                    }
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+               اول تمام خانه ها پاک شوند
+            */
+
+            cells.forEach(
+                function(cell){
+
+                    cell.textContent =
+                        "";
+
+                    cell.classList.remove(
+                        "hintedCell"
+                    );
+
+
+                    cell.style.background =
+                        "";
+
+
+                    cell.style.color =
+                        "";
+
+                }
+            );
+
+
+            /*
+               حروف ذخیره شده کمک
+            */
+
+            const indexes =
+                getHintIndexes(word);
+
+
+            indexes.forEach(
+                function(index){
+
+                    if(
+                        cells[index]
+                    ){
+
+                        cells[index].textContent =
+                            word[index];
+
+
+                        cells[index].classList.add(
+                            "hintedCell"
+                        );
+
+
+                        /*
+                           خاکستری
+                        */
+
+                        cells[index].style.background =
+                            "#9ca3af";
+
+                        cells[index].style.color =
+                            "#ffffff";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   بازسازی جدول و سپس اعمال کمک ها
+========================================================= */
+
+function refreshAnswersWithHints(){
+
+    /*
+       اول جدول اصلی بازی ساخته شود
+    */
+
+    showAnswers();
+
+
+    /*
+       بعد کمک های ذخیره شده
+       روی همان جدول اعمال شوند
+    */
+
+    renderHelpHints();
+
+}
+
+
+/* =========================================================
+   کمک معمولی
+   هزینه: 500 سکه
+========================================================= */
+
+function useNormalHelp(){
+
+    const messageBox =
+        document.getElementById(
+            "guideHelpMessage"
+        );
+
+
+    messageBox.textContent =
+        "";
+
+
+    const remaining =
+        getRemainingHelpWords();
+
+
+    if(
+        remaining.length === 0
+    ){
+
+        messageBox.textContent =
+            "رئیس کل کلمات راهنمایی شدند";
+
+        return;
+
+    }
+
+
+    /*
+       انتخاب طولانی ترین کلمه
+    */
+
+    let selectedWord =
+        remaining[0];
+
+
+    for(
+        let i = 1;
+        i < remaining.length;
+        i++
+    ){
+
+        if(
+            remaining[i].length >
+            selectedWord.length
+        ){
+
+            selectedWord =
+                remaining[i];
+
+        }
+
+    }
+
+
+    const indexes =
+        getHintIndexes(
+            selectedWord
+        );
+
+
+    /*
+       اولین حرفی که هنوز راهنمایی نشده
+    */
+
+    let nextIndex = -1;
+
+
+    for(
+        let i = 0;
+        i < selectedWord.length;
+        i++
+    ){
+
+        if(
+            !indexes.includes(i)
+        ){
+
+            nextIndex =
+                i;
+
+            break;
+
+        }
+
+    }
+
+
+    if(
+        nextIndex === -1
+    ){
+
+        messageBox.textContent =
+            "رئیس کل کلمات راهنمایی شدند";
+
+        return;
+
+    }
+
+
+    /*
+       بررسی سکه
+    */
+
+    if(
+        BigInt(game.coins) <
+        BigInt(1000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    /*
+       کم کردن سکه
+    */
+
+    if(
+        !removeCoins(1000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    indexes.push(
+        nextIndex
+    );
+
+
+    setHintIndexes(
+        selectedWord,
+        indexes
+    );
+
+
+    updateInfo();
+
+
+    /*
+       جدول را دوباره بساز
+       و فوراً کمک را اعمال کن
+    */
+
+    refreshAnswersWithHints();
+
+
+    messageBox.textContent =
+        "راهنمایی شد";
+
+}
+
+
+/* =========================================================
+   راهنما شانسی
+   هزینه: 900 سکه
+========================================================= */
+
+function useRandomHelp(){
+
+    const messageBox =
+        document.getElementById(
+            "randomHelpMessage"
+        );
+
+
+    messageBox.textContent =
+        "";
+
+
+    const remaining =
+        getRemainingHelpWords();
+
+
+    if(
+        remaining.length === 0
+    ){
+
+        messageBox.textContent =
+            "همه راهنما شانسی جدول را پر کرد";
+
+        return;
+
+    }
+
+
+    /*
+       انتخاب تصادفی کلمه
+    */
+
+    const wordIndex =
+        Math.floor(
+            Math.random() *
+            remaining.length
+        );
+
+
+    const selectedWord =
+        remaining[wordIndex];
+
+
+    const indexes =
+        getHintIndexes(
+            selectedWord
+        );
+
+
+    /*
+       پیدا کردن حروفی که هنوز نمایش داده نشده‌اند
+    */
+
+    const availableIndexes = [];
+
+
+    for(
+        let i = 0;
+        i < selectedWord.length;
+        i++
+    ){
+
+        if(
+            !indexes.includes(i)
+        ){
+
+            availableIndexes.push(i);
+
+        }
+
+    }
+
+
+    if(
+        availableIndexes.length === 0
+    ){
+
+        messageBox.textContent =
+            "رئیس کل کلمات راهنمایی شدند";
+
+        return;
+
+    }
+
+
+    /*
+       انتخاب تصادفی حرف
+    */
+
+    const letterIndex =
+        Math.floor(
+            Math.random() *
+            availableIndexes.length
+        );
+
+
+    const selectedLetterIndex =
+        availableIndexes[
+            letterIndex
+        ];
+
+
+    /*
+       بررسی سکه
+    */
+
+    if(
+        BigInt(game.coins) <
+        BigInt(1000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    if(
+        !removeCoins(1000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    indexes.push(
+        selectedLetterIndex
+    );
+
+
+    setHintIndexes(
+        selectedWord,
+        indexes
+    );
+
+
+    updateInfo();
+
+
+    refreshAnswersWithHints();
+
+
+    messageBox.textContent =
+        "راهنما شانسی شد";
+
+}
+
+
+/* =========================================================
+   کامل کردن یک کلمه کامل
+   هزینه: 1000 سکه
+========================================================= */
+
+function useCompleteHelp(){
+
+    const messageBox =
+        document.getElementById(
+            "completeHelpMessage"
+        );
+
+
+    messageBox.textContent =
+        "";
+
+
+    const remaining =
+        getRemainingHelpWords();
+
+
+    if(
+        remaining.length === 0
+    ){
+
+        messageBox.textContent =
+            "رئیس کل کلمات راهنمایی شدند";
+
+        return;
+
+    }
+
+
+    /*
+       انتخاب تصادفی یک کلمه
+    */
+
+    const wordIndex =
+        Math.floor(
+            Math.random() *
+            remaining.length
+        );
+
+
+    const selectedWord =
+        remaining[wordIndex];
+
+
+    /*
+       بررسی سکه
+    */
+
+    if(
+        BigInt(game.coins) <
+        BigInt(5000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    if(
+        !removeCoins(5000)
+    ){
+
+        messageBox.textContent =
+            "رئیس سکه شما ناکافی است";
+
+        return;
+
+    }
+
+
+    /*
+       تمام حروف کلمه
+    */
+
+    const allIndexes = [];
+
+
+    for(
+        let i = 0;
+        i < selectedWord.length;
+        i++
+    ){
+
+        allIndexes.push(i);
+
+    }
+
+
+    setHintIndexes(
+        selectedWord,
+        allIndexes
+    );
+
+
+    updateInfo();
+
+
+    refreshAnswersWithHints();
+
+
+    messageBox.textContent =
+        "یک کلمه کامل شد";
+
+}
+
+
+/* =========================================================
+   باز کردن پنجره کمک ها
+
+   این تابع کاملاً مستقل است
+   و به بررسی کردن کلمه وابسته نیست.
+========================================================= */
+
+function openHelpBox(){
+
+    /*
+       اول کمک های ذخیره شده را
+       روی جدول اعمال کن.
+    */
+
+    renderHelpHints();
+
+
+    const helpBox =
+        document.getElementById(
+            "helpBox"
+        );
+
+
+    if(!helpBox){
+
+        return;
+
+    }
+
+
+    helpBox.classList.remove(
+        "hide"
+    );
+
+}
+
+
+/* =========================================================
+   بستن پنجره کمک ها
+========================================================= */
+
+function closeHelpBox(){
+
+    const helpBox =
+        document.getElementById(
+            "helpBox"
+        );
+
+
+    if(!helpBox){
+
+        return;
+
+    }
+
+
+    helpBox.classList.add(
+        "hide"
+    );
+
+}
+
+
+/* =========================================================
+   دکمه کمک ها
+========================================================= */
+
+const helpButton =
+    document.getElementById(
+        "helpBtn"
+    );
+
+
+if(helpButton){
+
+    helpButton.onclick =
+        function(){
+
+            openHelpBox();
+
+            this.blur();
+
+        };
+
+}
+
+
+/* =========================================================
+   دکمه بستن
+========================================================= */
+
+const closeHelpButton =
+    document.getElementById(
+        "closeHelp"
+    );
+
+
+if(closeHelpButton){
+
+    closeHelpButton.onclick =
+        function(){
+
+            closeHelpBox();
+
+            this.blur();
+
+        };
+
+}
+
+
+/* =========================================================
+   کلیک روی فضای بیرون پنجره
+========================================================= */
+
+const helpBoxElement =
+    document.getElementById(
+        "helpBox"
+    );
+
+
+if(helpBoxElement){
+
+    helpBoxElement.addEventListener(
+        "click",
+        function(e){
+
+            if(
+                e.target ===
+                helpBoxElement
+            ){
+
+                closeHelpBox();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   دکمه راهنما
+========================================================= */
+
+const normalHelpButton =
+    document.getElementById(
+        "guideHelpBtn"
+    );
+
+
+if(normalHelpButton){
+
+    normalHelpButton.onclick =
+        function(){
+
+            useNormalHelp();
+
+            this.blur();
+
+        };
+
+}
+
+
+/* =========================================================
+   دکمه راهنما شانسی
+========================================================= */
+
+const randomHelpButton =
+    document.getElementById(
+        "randomHelpBtn"
+    );
+
+
+if(randomHelpButton){
+
+    randomHelpButton.onclick =
+        function(){
+
+            useRandomHelp();
+
+            this.blur();
+
+        };
+
+}
+
+
+/* =========================================================
+   دکمه کامل کردن یک کلمه
+========================================================= */
+
+const completeHelpButton =
+    document.getElementById(
+        "completeHelpBtn"
+    );
+
+
+if(completeHelpButton){
+
+    completeHelpButton.onclick =
+        function(){
+
+            useCompleteHelp();
+
+            this.blur();
+
+        };
+
+}
+
+
+/* =========================================================
+   اصلاح showLevel
+
+   نکته مهم:
+   هنگام ورود دوباره به مرحله،
+   اول بازی مرحله را می‌سازد،
+   سپس کمک های ذخیره شده نمایش داده می‌شوند.
+========================================================= */
+
+const originalShowLevelForHelp =
+    showLevel;
+
+
+showLevel =
+    function(){
+
+        originalShowLevelForHelp();
+
+
+        /*
+           با کمی تأخیر صفر میلی‌ثانیه،
+           اجازه می‌دهیم DOM جدول کامل شود.
+        */
+
+        setTimeout(
+            function(){
+
+                renderHelpHints();
+
+            },
+            0
+        );
+
+    };
+
+
+/* =========================================================
+   اصلاح showAnswers
+
+   هر وقت جدول دوباره ساخته شد،
+   کمک های ذخیره شده دوباره روی آن اعمال شوند.
+========================================================= */
+
+const originalShowAnswersForHelp =
+    showAnswers;
+
+
+showAnswers =
+    function(){
+
+        originalShowAnswersForHelp();
+
+
+        /*
+           جدول همین الان ساخته شده،
+           پس کمک ها را مستقیم اعمال می‌کنیم.
+        */
+
+        renderHelpHints();
+
+    };
+
+
+/* =========================================================
+   آماده سازی اولیه
+========================================================= */
+
+normalizeHintData();
+
+
+/*
+   اگر بازی از قبل در صفحه بازی است،
+   کمک های ذخیره شده فوراً نمایش داده شوند.
+*/
+
+if(
+    !gamePage.classList.contains(
+        "hide"
+    )
+){
+
+    setTimeout(
+        function(){
+
+            renderHelpHints();
+
+        },
+        0
+    );
+
+}
+
+/* =========================
+   بررسی کلمه
+========================= */
+
+function checkWord(){
+
+    if(!currentWord){
+
+        showMessage(
+            "اول کلمه بساز",
+            "wrong"
+        );
+
+        return;
+
+    }
+
+
+    const data =
+        getLevel();
+
+    const found =
+        getFound();
+
+    const word =
+        currentWord;
+
+
+    /* =====================
+       تکراری
+    ===================== */
+
+    if(
+        found.includes(word)
+    ){
+
+        /*
+           هیچ سکه‌ای داده نمی‌شود.
+        */
+
+        showMessage(
+            "این کلمه قبلاً زدید",
+            "repeat"
+        );
+
+
+        currentWord = "";
+
+        restoreUsedLetters();
+
+        showWord();
+
+        showLetters();
+
+        return;
+
+    }
+
+
+    /* =====================
+       اشتباه
+    ===================== */
+
+    if(
+        !data.answers.includes(
+            word
+        )
+    ){
+
+        /*
+           هیچ سکه‌ای داده نمی‌شود.
+        */
+
+        showMessage(
+            "کلمه اشتباه است",
+            "wrong"
+        );
+
+
+        currentWord = "";
+
+        restoreUsedLetters();
+
+        showWord();
+
+        showLetters();
+
+        return;
+
+    }
+
+
+    /* =====================
+       درست
+    ===================== */
+
+    found.push(word);
+
+
+    /*
+       جایزه بر اساس تعداد حروف
+    */
+
+    const reward =
+        getWordReward(
+            word.length
+        );
+
+
+    addCoins(reward);
+
+
+    showMessage(
+        "کلمه درست بود +" +
+        reward +
+        " سکه",
+        "correct"
+    );
+
+
+    currentWord = "";
+
+    restoreUsedLetters();
+
+
+    saveGame();
+
+
+    updateInfo();
+
+    showWord();
+
+    showAnswers();
+
+    showLetters();
+
+
+    /* =====================
+       پایان مرحله
+    ===================== */
+
+    if(
+        isComplete(
+            game.levelId
+        )
+    ){
+
+        setTimeout(
+            finishLevel,
+            700
+        );
+
+    }
+
+}
+
+
+/* =========================
+   پایان مرحله
+========================= */
+
+function finishLevel(){
+
+    const index =
+        getLevelIndex();
+
+
+    /*
+       مرحله بعد وجود دارد
+    */
+
+    if(
+        index <
+        levels.length - 1
+    ){
+
+        game.levelId =
+            levels[index + 1].id;
+
+
+        saveGame();
+
+
+        showLevel();
+
+
+        showMessage(
+            "🎉 مرحله کامل شد",
+            "correct"
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       واقعاً آخرین مرحله است.
+    */
+
+    showMessage(
+        "🎉 این آخرین مرحله است؛ منتظر مراحل آینده باشید",
+        "correct"
+    );
+
+
+    saveGame();
+
+}
+
+
+/* =========================
+   نمایش صفحه
+========================= */
+
+function showPage(page){
+
+    home.classList.add(
+        "hide"
+    );
+
+    gamePage.classList.add(
+        "hide"
+    );
+
+
+    page.classList.remove(
+        "hide"
+    );
+
+
+    page.classList.remove(
+        "show"
+    );
+
+
+    void page.offsetWidth;
+
+
+    page.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================
+   شروع بازی
+========================= */
+
+document.getElementById(
+    "startBtn"
+).onclick = function(){
+
+    showPage(
+        gamePage
+    );
+
+
+    showLevel();
+
+
+    this.blur();
+
+};
+
+
+/* =========================
+   راهنما
+========================= */
+
+document.getElementById(
+    "guideBtn"
+).onclick = function(){
+
+    guideBox.classList.remove(
+        "hide"
+    );
+
+
+    this.blur();
+
+};
+
+
+/* =========================
+   بستن راهنما
+========================= */
+
+document.getElementById(
+    "closeGuide"
+).onclick = function(){
+
+    guideBox.classList.add(
+        "hide"
+    );
+
+
+    this.blur();
+
+};
+
+
+/* =========================
+   برگشت
+========================= */
+
+document.getElementById(
+    "backBtn"
+).onclick = function(){
+
+    showPage(
+        home
+    );
+
+
+    this.blur();
+
+};
+
+
+/* =========================
+   پاک کردن
+========================= */
+
+document.getElementById(
+    "clearBtn"
+).onclick = function(){
+
+    clearWord();
+
+    this.blur();
+
+};
+
+
+/* =========================
+   بررسی
+========================= */
+
+document.getElementById(
+    "checkBtn"
+).onclick = function(){
+
+    checkWord();
+
+    this.blur();
+
+};
+
+
+/* =========================
+   جلوگیری از منوی لمس
+========================= */
+
+document.addEventListener(
+    "contextmenu",
+    function(e){
+
+        e.preventDefault();
+
+    }
+);
+
+
+/* =========================
+   شروع اولیه
+========================= */
+
+updateAfterNewLevels();
+
+updateInfo();
+
+showWord();
+
+</script>
+</body>
+</html>
